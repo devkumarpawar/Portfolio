@@ -10,8 +10,8 @@ import {
   Server,
 } from "lucide-react";
 import { useState } from "react";
-import ResumePdf from "./assets/DevkumarPawar.pdf"; // put your resume at: src/assets/DevkumarPawar.pdf
-import Logo from "./assets/dp.png"; // put your logo at: src/assets/dp.png
+import ResumePdf from "./assets/DevkumarPawar.pdf";
+import Logo from "./assets/dp.png";
 
 type Section = { id: string; label: string };
 
@@ -37,7 +37,7 @@ export default function App() {
   return (
     <div className="font-sans text-gray-900">
       {/* NAVBAR */}
-      <nav className="fixed inset-x-0 top-0 z-50 border-b border-white/30 bg-white/60 backdrop-blur-md">
+      <nav className="fixed inset-x-0 top-0 z-50 transition-all duration-300 border-b shadow-md border-white/20 bg-white/50 backdrop-blur-md">
         <div className="max-w-6xl px-4 mx-auto">
           <div className="flex items-center justify-between h-14">
             <a href="#hero" className="flex items-center gap-2">
@@ -48,8 +48,10 @@ export default function App() {
                 <li key={s.id}>
                   <button
                     onClick={() => scrollTo(s.id)}
-                    className={`transition-colors hover:text-indigo-600 ${
-                      active === s.id ? "text-indigo-600" : "text-gray-700"
+                    className={`relative transition-colors hover:text-indigo-600 ${
+                      active === s.id
+                        ? "text-indigo-600 after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-indigo-600"
+                        : "text-gray-700"
                     }`}
                   >
                     {s.label}
@@ -60,7 +62,7 @@ export default function App() {
             <a
               href={ResumePdf}
               download
-              className="hidden md:inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-sm shadow hover:bg-indigo-700"
+              className="hidden md:inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gradient-to-r from-indigo-600 to-pink-500 text-white text-sm shadow hover:scale-105 transition"
             >
               <FileDown className="w-4 h-4" /> Download Resume
             </a>
@@ -73,7 +75,6 @@ export default function App() {
         id="hero"
         className="relative flex items-center justify-center min-h-screen pt-16 overflow-hidden text-center"
       >
-        {/* Background with glassy overlay */}
         <div className="absolute inset-0 -z-10">
           <img
             src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1920&q=80"
@@ -81,6 +82,12 @@ export default function App() {
             className="object-cover w-full h-full opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/50 to-white/80 backdrop-blur-[2px]" />
+          {/* Floating circle animation */}
+          <motion.div
+            className="absolute w-4 h-4 bg-indigo-500 rounded-full opacity-50 top-1/4 left-1/3"
+            animate={{ x: [0, 300, 0], y: [0, 200, 0] }}
+            transition={{ duration: 15, repeat: Infinity }}
+          />
         </div>
 
         <div className="max-w-3xl px-6 mx-auto">
@@ -98,11 +105,12 @@ export default function App() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.25, duration: 0.7 }}
           >
-            Full Stack Developer — React, Next.js, Node.js, Express, PostgreSQL
-            & MongoDB
+            <span className="font-semibold text-indigo-600">
+              Full Stack Developer
+            </span>{" "}
+            — React, Next.js, Node.js, Express, PostgreSQL & MongoDB
           </motion.p>
 
-          {/* Big social icons + resume CTA for mobile */}
           <div className="flex flex-wrap items-center justify-center gap-6 mt-8">
             <a href="mailto:devkumarspawar99@gmail.com" aria-label="Email">
               <Mail className="w-12 h-12 text-indigo-600 transition sm:w-14 sm:h-14 hover:scale-110" />
@@ -126,7 +134,7 @@ export default function App() {
             <a
               href={ResumePdf}
               download
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm text-white bg-indigo-600 rounded-lg shadow md:hidden hover:bg-indigo-700"
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm text-white transition rounded-lg shadow bg-gradient-to-r from-indigo-600 to-pink-500 md:hidden hover:scale-105"
             >
               <FileDown className="w-4 h-4" /> Resume
             </a>
@@ -137,8 +145,17 @@ export default function App() {
       {/* ABOUT */}
       <section id="about" className="py-20 bg-white sm:py-24">
         <div className="grid items-center max-w-6xl gap-10 px-6 mx-auto md:grid-cols-2">
-          <motion.div
+          <motion.img
+            src={Logo}
+            alt="Devkumar"
+            className="w-48 mx-auto rounded-full md:mx-0"
             initial={{ x: -40, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          />
+          <motion.div
+            initial={{ x: 40, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
@@ -146,55 +163,49 @@ export default function App() {
             <h2 className="mb-4 text-3xl font-bold">About Me</h2>
             <p className="leading-relaxed text-gray-700">
               Full Stack Developer with 3+ years of experience building scalable
-              web applications and learning platforms. Strong in React/Next.js
-              on the frontend and Node.js/Express with PostgreSQL & MongoDB on
-              the backend. Hands-on with Tailwind CSS for responsive UI, and
-              working knowledge of AWS and Python. I focus on performance,
-              accessibility, and clean DX for maintainable products.
+              web applications. Strong in React/Next.js on the frontend and
+              Node.js/Express with PostgreSQL & MongoDB on the backend. Hands-on
+              with Tailwind CSS and working knowledge of AWS and Python. Focused
+              on performance, accessibility, and clean DX for maintainable
+              products.
             </p>
-          </motion.div>
 
-          <motion.ul
-            className="grid gap-4 sm:grid-cols-2"
-            initial={{ x: 40, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            {[
-              {
-                icon: <Rocket className="w-5 h-5" />,
-                title: "Performance",
-                desc: "Fast, SEO-friendly builds.",
-              },
-              {
-                icon: <Code2 className="w-5 h-5" />,
-                title: "Frontend",
-                desc: "React, Next.js, Tailwind CSS.",
-              },
-              {
-                icon: <Server className="w-5 h-5" />,
-                title: "Backend",
-                desc: "Node.js, Express APIs.",
-              },
-              {
-                icon: <Database className="w-5 h-5" />,
-                title: "Databases",
-                desc: "PostgreSQL, MongoDB.",
-              },
-            ].map((item, i) => (
-              <li
-                key={i}
-                className="p-5 transition border shadow-sm rounded-xl bg-gray-50/80 hover:bg-white"
-              >
-                <div className="flex items-center gap-2 font-semibold">
-                  {item.icon}
-                  {item.title}
-                </div>
-                <p className="mt-1 text-sm text-gray-600">{item.desc}</p>
-              </li>
-            ))}
-          </motion.ul>
+            <ul className="grid gap-4 mt-6 sm:grid-cols-2">
+              {[
+                {
+                  icon: <Rocket />,
+                  title: "Performance",
+                  desc: "Fast, SEO-friendly builds.",
+                },
+                {
+                  icon: <Code2 />,
+                  title: "Frontend",
+                  desc: "React, Next.js, Tailwind CSS.",
+                },
+                {
+                  icon: <Server />,
+                  title: "Backend",
+                  desc: "Node.js, Express APIs.",
+                },
+                {
+                  icon: <Database />,
+                  title: "Databases",
+                  desc: "PostgreSQL, MongoDB.",
+                },
+              ].map((item, i) => (
+                <li
+                  key={i}
+                  className="p-5 transition border shadow-sm rounded-xl bg-gray-50/80 hover:bg-white"
+                >
+                  <div className="flex items-center gap-2 font-semibold">
+                    {item.icon}
+                    {item.title}
+                  </div>
+                  <p className="mt-1 text-sm text-gray-600">{item.desc}</p>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
         </div>
       </section>
 
@@ -224,7 +235,7 @@ export default function App() {
               <motion.div
                 key={skill}
                 whileHover={{ scale: 1.05 }}
-                className="p-3 text-sm text-center bg-white border shadow-sm rounded-xl sm:text-base"
+                className="p-3 text-sm text-center text-white transition shadow bg-gradient-to-r from-indigo-500 to-pink-500 rounded-xl hover:scale-105"
               >
                 {skill}
               </motion.div>
@@ -237,49 +248,51 @@ export default function App() {
       <section id="experience" className="py-20 bg-white sm:py-24">
         <div className="max-w-6xl px-6 mx-auto">
           <h2 className="mb-8 text-3xl font-bold">Experience</h2>
-          <div className="grid gap-6 md:grid-cols-2">
-            <motion.div
-              className="p-6 border shadow-sm rounded-xl bg-gray-50"
-              whileHover={{ scale: 1.01 }}
-            >
-              <h3 className="text-xl font-semibold">
-                Full Stack Developer — School of Inspirational Leadership (Pune)
-              </h3>
-              <p className="text-sm text-gray-600">
-                Feb 2022 – Present • On-site
-              </p>
-              <ul className="mt-3 text-gray-700 list-disc list-inside">
-                <li>
-                  Built LMS and strategic-document modules using React/Node.
-                </li>
-                <li>
-                  Developed REST APIs in Express; data in PostgreSQL & MongoDB.
-                </li>
-                <li>
-                  Improved SEO & performance; delivered responsive UI with
-                  Tailwind.
-                </li>
-              </ul>
-            </motion.div>
-
-            <motion.div
-              className="p-6 border shadow-sm rounded-xl bg-gray-50"
-              whileHover={{ scale: 1.01 }}
-            >
-              <h3 className="text-xl font-semibold">
-                Freelance Web Developer — Tech Wingz
-              </h3>
-              <p className="text-sm text-gray-600">Mar 2023 – Sep 2023</p>
-              <ul className="mt-3 text-gray-700 list-disc list-inside">
-                <li>Delivered responsive websites end-to-end.</li>
-                <li>Integrated backends & implemented SEO fixes.</li>
-              </ul>
-            </motion.div>
+          <div className="relative before:absolute before:left-1/2 before:w-1 before:h-full before:bg-gray-200">
+            {[
+              {
+                title:
+                  "Full Stack Developer — School of Inspirational Leadership (Pune)",
+                date: "Feb 2022 – Present",
+                bullets: [
+                  "Built LMS and strategic-document modules using React/Node.",
+                  "Developed REST APIs in Express; data in PostgreSQL & MongoDB.",
+                  "Improved SEO & performance; delivered responsive UI with Tailwind.",
+                ],
+              },
+              {
+                title: "Freelance Web Developer — Tech Wingz",
+                date: "Mar 2023 – Sep 2023",
+                bullets: [
+                  "Delivered responsive websites end-to-end.",
+                  "Integrated backends & implemented SEO fixes.",
+                ],
+              },
+            ].map((job, idx) => (
+              <motion.div
+                key={idx}
+                className={`md:flex md:justify-between items-center mb-10 relative ${
+                  idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+                }`}
+                whileHover={{ scale: 1.01 }}
+              >
+                <div className="p-6 border shadow-md md:w-1/2 rounded-xl bg-gray-50">
+                  <h3 className="text-xl font-semibold">{job.title}</h3>
+                  <p className="text-sm text-gray-600">{job.date}</p>
+                  <ul className="mt-3 text-gray-700 list-disc list-inside">
+                    {job.bullets.map((b, i) => (
+                      <li key={i}>{b}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="absolute w-6 h-6 -translate-x-1/2 bg-indigo-600 rounded-full left-1/2 top-6"></div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* PROJECTS (from your resume) */}
+      {/* PROJECTS */}
       <section id="projects" className="relative py-20 sm:py-24">
         <div className="absolute inset-0 -z-10">
           <img
@@ -336,7 +349,7 @@ export default function App() {
               <motion.div
                 key={i}
                 whileHover={{ scale: 1.02 }}
-                className="p-6 transition border shadow-sm rounded-xl bg-white/70 backdrop-blur-md hover:shadow-xl"
+                className="p-6 transition border shadow-md rounded-xl bg-white/70 backdrop-blur-md hover:shadow-xl hover:scale-105"
               >
                 <h3 className="text-lg font-semibold">{p.name}</h3>
                 <ul className="mt-2 space-y-1 text-sm text-gray-700 list-disc list-inside">
@@ -347,7 +360,7 @@ export default function App() {
                 <div className="flex gap-4 mt-3 text-sm">
                   {p.live && (
                     <a
-                      className="text-indigo-600 underline"
+                      className="px-3 py-1 text-white transition rounded shadow bg-gradient-to-r from-indigo-600 to-pink-500 hover:scale-105"
                       href={p.live}
                       target="_blank"
                       rel="noreferrer"
@@ -357,7 +370,7 @@ export default function App() {
                   )}
                   {p.source && (
                     <a
-                      className="text-gray-800 underline"
+                      className="px-3 py-1 transition bg-white border rounded shadow hover:scale-105"
                       href={p.source}
                       target="_blank"
                       rel="noreferrer"
@@ -377,10 +390,16 @@ export default function App() {
         <div className="max-w-6xl px-6 mx-auto">
           <h2 className="mb-6 text-3xl font-bold">Certifications</h2>
           <ul className="grid gap-4 text-gray-800 sm:grid-cols-2">
-            <li className="p-4 border rounded-xl bg-gray-50">
+            <li className="relative p-4 transition border rounded-xl bg-gray-50 hover:shadow-lg">
+              <div className="absolute flex items-center justify-center w-6 h-6 text-xs text-white bg-indigo-600 rounded-full -top-3 left-3">
+                🎓
+              </div>
               Full-Stack JavaScript Development — LinkedIn (Nov 2021)
             </li>
-            <li className="p-4 border rounded-xl bg-gray-50">
+            <li className="relative p-4 transition border rounded-xl bg-gray-50 hover:shadow-lg">
+              <div className="absolute flex items-center justify-center w-6 h-6 text-xs text-white bg-indigo-600 rounded-full -top-3 left-3">
+                🎓
+              </div>
               Full Stack Web Developer — Udemy (Sep 2021)
             </li>
           </ul>
@@ -391,7 +410,7 @@ export default function App() {
       <section id="education" className="py-20 sm:py-24 bg-gray-50">
         <div className="max-w-6xl px-6 mx-auto">
           <h2 className="mb-6 text-3xl font-bold">Education</h2>
-          <div className="p-6 bg-white border shadow-sm rounded-xl">
+          <div className="p-6 transition bg-white border shadow-sm rounded-xl hover:shadow-lg">
             <h3 className="text-xl font-semibold">
               Savitribai Phule Pune University
             </h3>
@@ -412,26 +431,34 @@ export default function App() {
           <p className="mb-6 text-gray-700">
             Interested in working together? Let’s build something powerful.
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-6">
             <a
               href="mailto:devkumarspawar99@gmail.com"
-              className="inline-flex items-center gap-2 px-6 py-3 text-white bg-indigo-600 rounded-lg shadow hover:bg-indigo-700"
+              className="flex items-center gap-2 px-4 py-2 text-white transition rounded-lg shadow bg-gradient-to-r from-indigo-600 to-pink-500 hover:scale-105"
             >
-              <Mail className="w-5 h-5" /> Email Me
+              <Mail className="w-4 h-4" /> Email Me
             </a>
             <a
-              href={ResumePdf}
-              download
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white border rounded-lg shadow hover:bg-gray-50"
+              href="https://github.com/devkumarpawar"
+              target="_blank"
+              className="flex items-center gap-2 px-4 py-2 transition border rounded-lg shadow hover:scale-105"
             >
-              <FileDown className="w-5 h-5" /> Download Resume
+              <Github className="w-4 h-4" /> GitHub
             </a>
           </div>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="py-8 text-sm text-center text-gray-600 bg-white border-t">
+      <footer className="flex flex-col items-center gap-2 py-8 text-sm text-center text-white bg-gray-900">
+        <div className="flex gap-4 mb-2">
+          <a href="https://github.com/devkumarpawar" target="_blank">
+            <Github className="w-5 h-5 text-white" />
+          </a>
+          <a href="https://www.linkedin.com/in/devkumarpwebd" target="_blank">
+            <Linkedin className="w-5 h-5 text-white" />
+          </a>
+        </div>
         © {new Date().getFullYear()} Devkumar Pawar. All rights reserved.
       </footer>
     </div>
