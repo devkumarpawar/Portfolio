@@ -104,7 +104,7 @@ export default function App() {
 
           {/* Big social icons + resume CTA for mobile */}
           <div className="flex flex-wrap items-center justify-center gap-6 mt-8">
-            <a href="mailto:yourmail@gmail.com" aria-label="Email">
+            <a href="mailto:devkumarspawar99@gmail.com" aria-label="Email">
               <Mail className="w-12 h-12 text-indigo-600 transition sm:w-14 sm:h-14 hover:scale-110" />
             </a>
             <a
