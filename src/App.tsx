@@ -323,6 +323,15 @@ export default function App() {
                   "Real-time pose detection & tracking.",
                 ],
               },
+              {
+                name: "Taz Logistics",
+                live: "",
+                source: "http://tazgroup.co.in",
+                bullets: [
+                  "Website Development for Taz Logistics.",
+                  "Responsive design with React.",
+                ],
+              },
             ].map((p, i) => (
               <motion.div
                 key={i}
