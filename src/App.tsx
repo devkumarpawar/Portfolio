@@ -6,8 +6,10 @@ import {
   Github,
   Linkedin,
   Mail,
+  Menu,
   Rocket,
   Server,
+  X,
 } from "lucide-react";
 import { useState } from "react";
 import ResumePdf from "./assets/DevkumarPawar.pdf";
@@ -27,11 +29,14 @@ const sections: Section[] = [
 
 export default function App() {
   const [active, setActive] = useState<string>("about");
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const scrollTo = (id: string) => {
     document
       .getElementById(id)
       ?.scrollIntoView({ behavior: "smooth", block: "start" });
     setActive(id);
+    setMenuOpen(false);
   };
 
   return (
@@ -43,6 +48,8 @@ export default function App() {
             <a href="#hero" className="flex items-center gap-2">
               <img src={Logo} alt="DP Logo" className="w-auto h-8 sm:h-9" />
             </a>
+
+            {/* Desktop Nav */}
             <ul className="items-center hidden gap-5 text-sm md:flex">
               {sections.map((s) => (
                 <li key={s.id}>
@@ -59,17 +66,59 @@ export default function App() {
                 </li>
               ))}
             </ul>
+
+            {/* Resume Button (Desktop only) */}
             <a
               href={ResumePdf}
               download
               className="hidden md:inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gradient-to-r from-indigo-600 to-pink-500 text-white text-sm shadow hover:scale-105 transition"
             >
-              <FileDown className="w-4 h-4" /> Download Resume
+              <FileDown className="w-4 h-4" /> Resume
             </a>
+
+            {/* Mobile Menu Button */}
+            <button
+              className="md:hidden"
+              onClick={() => setMenuOpen((prev) => !prev)}
+            >
+              {menuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
           </div>
         </div>
-      </nav>
 
+        {/* Mobile Nav Dropdown */}
+        {menuOpen && (
+          <div className="absolute inset-x-0 bg-white shadow-md md:hidden">
+            <ul className="flex flex-col items-center gap-4 py-4">
+              {sections.map((s) => (
+                <li key={s.id}>
+                  <button
+                    onClick={() => scrollTo(s.id)}
+                    className={`text-base transition-colors ${
+                      active === s.id
+                        ? "text-indigo-600 font-semibold"
+                        : "text-gray-700"
+                    }`}
+                  >
+                    {s.label}
+                  </button>
+                </li>
+              ))}
+              <a
+                href={ResumePdf}
+                download
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gradient-to-r from-indigo-600 to-pink-500 text-white text-sm shadow hover:scale-105 transition"
+              >
+                <FileDown className="w-4 h-4" /> Resume
+              </a>
+            </ul>
+          </div>
+        )}
+      </nav>
       {/* HERO */}
       <section
         id="hero"
@@ -248,7 +297,9 @@ export default function App() {
       <section id="experience" className="py-20 bg-white sm:py-24">
         <div className="max-w-6xl px-6 mx-auto">
           <h2 className="mb-8 text-3xl font-bold">Experience</h2>
-          <div className="relative before:absolute before:left-1/2 before:w-1 before:h-full before:bg-gray-200">
+
+          {/* Timeline Wrapper */}
+          <div className="relative before:hidden md:before:block before:absolute before:left-1/2 before:w-1 before:h-full before:bg-gray-200">
             {[
               {
                 title:
@@ -271,21 +322,26 @@ export default function App() {
             ].map((job, idx) => (
               <motion.div
                 key={idx}
-                className={`md:flex md:justify-between items-center mb-10 relative ${
-                  idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                }`}
+                className={`relative mb-10 
+            md:flex md:justify-between md:items-center 
+            ${idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}
                 whileHover={{ scale: 1.01 }}
               >
-                <div className="p-6 border shadow-md md:w-1/2 rounded-xl bg-gray-50">
-                  <h3 className="text-xl font-semibold">{job.title}</h3>
-                  <p className="text-sm text-gray-600">{job.date}</p>
-                  <ul className="mt-3 text-gray-700 list-disc list-inside">
+                {/* Card */}
+                <div className="w-full p-6 border shadow-md rounded-xl bg-gray-50 md:w-1/2">
+                  <h3 className="text-lg font-semibold sm:text-xl">
+                    {job.title}
+                  </h3>
+                  <p className="mt-1 text-sm text-gray-600">{job.date}</p>
+                  <ul className="mt-3 space-y-1 text-sm text-gray-700 list-disc list-inside sm:text-base">
                     {job.bullets.map((b, i) => (
                       <li key={i}>{b}</li>
                     ))}
                   </ul>
                 </div>
-                <div className="absolute w-6 h-6 -translate-x-1/2 bg-indigo-600 rounded-full left-1/2 top-6"></div>
+
+                {/* Timeline Dot (hidden on mobile, visible on desktop) */}
+                <div className="absolute hidden w-6 h-6 -translate-x-1/2 bg-indigo-600 rounded-full md:block left-1/2 top-6"></div>
               </motion.div>
             ))}
           </div>
