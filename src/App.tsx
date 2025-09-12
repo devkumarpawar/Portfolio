@@ -12,7 +12,7 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
-import ResumePdf from "./assets/DevkumarPawar.pdf";
+import ResumePdf from "./assets/Devkumarp99.pdf";
 import Logo from "./assets/dp.png";
 
 type Section = { id: string; label: string };
